@@ -25,7 +25,6 @@ func (c Usps) GetTracking(trackingNumber string) (Shipment, error) {
 	trackingURL := "https://tools.usps.com/go/TrackConfirmAction?tLabels=" + trackingNumber
 
 	doc, err := goquery.NewDocument(trackingURL)
-
 	if err != nil {
 		return shipment, err
 	}

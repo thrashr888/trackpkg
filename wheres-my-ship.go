@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/mitchellh/go-homedir"
-	"github.com/urfave/cli"
 	"os"
 	"strings"
+
+	"github.com/mitchellh/go-homedir"
+	"github.com/urfave/cli"
 )
 
-const trackingRepo = "~/.trackingrepo"
+const trackingRepo = "~/.wheres-my-ship"
 
 var trackingRepoPath, _ = homedir.Expand(trackingRepo)
 
@@ -71,10 +72,12 @@ func Add(context *cli.Context) error {
 
 	shipments, _ := repository.load()
 	shipment := Shipment{TrackingNumber: trackingNumber, Description: description, Delivered: false}
-	shipments.addItem(shipment)
-	err := repository.save(shipments)
+	err := shipments.addItem(shipment)
+	if err != nil {
+		return err
+	}
 
-	return err
+	return repository.save(shipments)
 }
 
 // Remove removes tracking number
@@ -86,18 +89,25 @@ func Remove(context *cli.Context) error {
 	}
 
 	shipments, _ := repository.load()
-	shipments.removeItem(trackingNumber)
+	err := shipments.removeItem(trackingNumber)
+	if err != nil {
+		return err
+	}
 
-	err := repository.save(shipments)
-
-	return err
+	return repository.save(shipments)
 }
 
 // Update updates status of all tracked numbers
 func Update(context *cli.Context) error {
 	shipments, err := repository.load()
+	if err != nil {
+		return err
+	}
 
-	shipments.updateTracking(supportedCarriers)
+	err = shipments.updateTracking(supportedCarriers)
+	if err != nil {
+		return err
+	}
 
 	err = repository.save(shipments)
 
@@ -108,7 +118,14 @@ func Update(context *cli.Context) error {
 func List(context *cli.Context) error {
 
 	shipments, err := repository.load()
-	shipments.list("", false)
+	if err != nil {
+		return err
+	}
+
+	err = shipments.list("", false)
+	if err != nil {
+		return err
+	}
 
 	return err
 }
@@ -119,7 +136,14 @@ func Detail(context *cli.Context) error {
 	trackingNumber := context.Args().First()
 
 	shipments, err := repository.load()
-	shipments.list(trackingNumber, true)
+	if err != nil {
+		return err
+	}
+
+	err = shipments.list(trackingNumber, true)
+	if err != nil {
+		return err
+	}
 
 	return err
 }
@@ -128,8 +152,14 @@ func Detail(context *cli.Context) error {
 func Clean(context *cli.Context) error {
 
 	shipments, err := repository.load()
+	if err != nil {
+		return err
+	}
 
-	shipments.removeDelivered()
+	err = shipments.removeDelivered()
+	if err != nil {
+		return err
+	}
 
 	err = repository.save(shipments)
 
@@ -144,7 +174,7 @@ func main() {
 
 	app := cli.NewApp()
 
-	app.Name = "Trackpkg"
+	app.Name = "Wheres My Ship"
 	app.Usage = "Track Shipment Packages"
 	app.Version = "0.1"
 	// app.Authors = []cli.Author{

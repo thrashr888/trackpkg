@@ -24,7 +24,6 @@ func (c Ups) GetTracking(trackingNumber string) (Shipment, error) {
 	trackingURL += trackingNumber
 
 	doc, err := goquery.NewDocument(trackingURL)
-
 	if err != nil {
 		return Shipment{}, err
 	}

@@ -5,13 +5,6 @@ import (
 	"io/ioutil"
 )
 
-// RepositoryInterface interface for handling shipments repository
-type RepositoryInterface interface {
-	load() (Shipments, error)
-	save(s Shipments) error
-	archive(s Shipments)
-}
-
 // ShipmentsRepository struct to read the file
 type ShipmentsRepository struct {
 	Path string
@@ -22,6 +15,9 @@ func (r ShipmentsRepository) load() (Shipments, error) {
 	shipments := Shipments{}
 
 	jsonString, err := ioutil.ReadFile(r.Path)
+	if err != nil {
+		return shipments, err
+	}
 
 	err = json.Unmarshal(jsonString, &shipments)
 
