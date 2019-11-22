@@ -177,12 +177,12 @@ func main() {
 	app.Name = "Wheres My Ship"
 	app.Usage = "Track Shipment Packages"
 	app.Version = "0.1"
-	// app.Authors = []cli.Author{
-	// 	cli.Author{
-	// 		Name:  "Jwalanta Shrestha",
-	// 		Email: "jwalanta@gmail.com",
-	// 	},
-	// }
+	app.Authors = []cli.Author{
+		cli.Author{
+			Name:  "Jwalanta Shrestha",
+			Email: "jwalanta@gmail.com",
+		},
+	}
 	app.EnableBashCompletion = true
 	app.Commands = commands
 

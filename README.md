@@ -1,8 +1,12 @@
 # Track Shipment Packages
 
+Blatantly forked and renamed from https://github.com/jwalanta/trackpkg. It hasn't
+seen updates in a while and I wanted it under a different name for myself. Thanks
+@jwalanta!
+
 Commandline tool for tracking shipment packages. Currently supports UPS, USPS and FedEx.
 
-The tracking information is stored as a json file at `~/.trackingrepo`. 
+The tracking information is stored as a json file at `~/.wheres-my-ship`. 
 
 ## Building and installing
 
